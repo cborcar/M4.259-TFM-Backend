@@ -70,15 +70,14 @@ class UsuarioController extends Controller
             $completeFileName = $request->file('foto')->getClientOriginalName();
             $fileNameOnly = pathinfo($completeFileName, PATHINFO_FILENAME);
             $extension = $request->file('foto')->getClientOriginalExtension();
+            //Tras obtener el nombre y la extensión, generamos un nombre único
             $completeName = str_replace(' ', '_', $fileNameOnly).'-'.rand() . '_'.time(). '.'.$extension;
             $path = $request->file('foto')->storeAs('public/userImages', $completeName);
             $request->foto = $completeName;
-            Usuario::findOrFail($id)->update([
-                'foto' => $request->foto,
-            ]);
+            Usuario::findOrFail($id)->update(['foto' => $request->foto,]);
             return response()->json($completeName);
         }
-    }   
+    }
 
     //Elimina un usuario
     public function destroy($id)
